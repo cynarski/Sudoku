@@ -62,12 +62,13 @@ class SudokuBoard(GridLayout):
         # Pobierz wprowadzoną liczbę
         number = instance.text
 
+        self.board[row][col].background_color = (1, 1, 1, 1)
         # Sprawdź, czy liczba jest poprawna
         if number:
             # Liczba jest podana - sprawdź, czy jest prawidłowa
             if self.puzzle_to_function[row][col] != number:
                 # Liczba jest nieprawidłowa - wyświetl komunikat błędu
-                print("Liczba jest nieprawidłowa")
+                self.board[row][col].background_color = (1, 0, 0, 0.7)
         else:
             # Liczba nie j
             instance.text = ''
