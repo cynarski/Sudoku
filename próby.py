@@ -16,6 +16,7 @@ class SudokuBoard(GridLayout):
         self.rows = 3
         self.spacing = 5
         self.padding = 5
+        self.puzzle_to_function = puzzle
 
         # Stwórz 9x9 siatkę pól tekstowych
         self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=50) for _ in range(9)] for _ in range(9)]
@@ -24,7 +25,7 @@ class SudokuBoard(GridLayout):
                 self.board[i][j].text = str(puzzle[i][j])
                 self.board[i][j].readonly = False
                 self.board[i][j].foreground_color = (0, 0, 0, 1)
-                self.board[i][j].on_text_validate = self.check_number
+                self.board[i][j].bind(on_text_validate=self.check_number)
                 self.board[i][j].id = f"{i}-{j}"
 
         # Stwórz 9 mniejszych kwadratów
@@ -64,7 +65,7 @@ class SudokuBoard(GridLayout):
         # Sprawdź, czy liczba jest poprawna
         if number:
             # Liczba jest podana - sprawdź, czy jest prawidłowa
-            if not sudoku.check_number(row, col, int(number)):
+            if self.puzzle_to_function[row][col] != number:
                 # Liczba jest nieprawidłowa - wyświetl komunikat błędu
                 print("Liczba jest nieprawidłowa")
         else:
