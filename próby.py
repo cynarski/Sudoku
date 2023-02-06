@@ -25,7 +25,7 @@ class SudokuBoard(GridLayout):
                 self.board[i][j].text = str(puzzle[i][j])
                 self.board[i][j].readonly = False
                 self.board[i][j].foreground_color = (0, 0, 0, 1)
-                self.board[i][j].bind(on_text_validate=self.check_number)
+                self.board[i][j].bind(text=self.check_number)
                 self.board[i][j].id = f"{i}-{j}"
 
         # Stwórz 9 mniejszych kwadratów
@@ -53,7 +53,7 @@ class SudokuBoard(GridLayout):
             col = random.randint(0,8)
             self.board[row][col].text = ""
 
-    def check_number(self, instance):
+    def check_number(self, instance, value):
         # Pobierz indeksy wiersza i kolumny z atrybutu id
         row, col = instance.id.split("-")
         row = int(row)
