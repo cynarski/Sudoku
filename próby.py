@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
 from dokusan import generators,renderers,solvers
 import random
 from sudoku import Sudoku
@@ -13,13 +14,14 @@ class SudokuBoard(GridLayout):
     def __init__(self, puzzle, **kwargs):
         super().__init__(**kwargs)
         self.cols = 3
-        self.rows = 3
+        self.rows = 4
         self.spacing = 5
         self.padding = 5
         self.puzzle_to_function = puzzle
+        self.lives = 3
 
         # Stwórz 9x9 siatkę pól tekstowych
-        self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=50) for _ in range(9)] for _ in range(9)]
+        self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=30) for _ in range(9)] for _ in range(9)]
         for i in range(9):
             for j in range(9):
                 self.board[i][j].text = str(puzzle[i][j])
@@ -31,6 +33,9 @@ class SudokuBoard(GridLayout):
         # Stwórz 9 mniejszych kwadratów
         self.create_board()
         self.remove_random_cells(20)
+        # życia i czas gry
+        self.box_lives = self.lives_display()
+        self.add_widget(self.box_lives)
 
     def create_small_square(self, row, col):
         small_square = BoxLayout(orientation='vertical', size_hint=(1, 1))
@@ -46,6 +51,10 @@ class SudokuBoard(GridLayout):
         for i in range(0, 9, 3):
             for j in range(0, 9, 3):
                 self.add_widget(self.create_small_square(i, j))
+
+    def lives_display(self):
+        label1 = Label(text="pozostała ilość żyć: " + str(self.lives), font_name="Comic")
+        return label1
 
     def remove_random_cells(self,count):
         for i in range(count):
@@ -69,6 +78,10 @@ class SudokuBoard(GridLayout):
             if self.puzzle_to_function[row][col] != number:
                 # Liczba jest nieprawidłowa - wyświetl komunikat błędu
                 self.board[row][col].background_color = (1, 0, 0, 0.7)
+                self.lives -= 1
+                self.box_lives.text = "pozostała ilość żyć: " + str(self.lives)
+                if self.lives <= 0:
+                    self.box_lives.text = "PORAŻKA :("
         else:
             # Liczba nie j
             instance.text = ''
