@@ -3,6 +3,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.button import Button
 from dokusan import generators,renderers,solvers
 import random
 from sudoku import Sudoku
@@ -19,6 +20,7 @@ class SudokuBoard(GridLayout):
         self.padding = 5
         self.puzzle_to_function = puzzle
         self.lives = 3
+        self.heart = '\u2665'
 
         # Stwórz 9x9 siatkę pól tekstowych
         self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=30) for _ in range(9)] for _ in range(9)]
@@ -36,6 +38,8 @@ class SudokuBoard(GridLayout):
         # życia i czas gry
         self.box_lives = self.lives_display()
         self.add_widget(self.box_lives)
+        # nowa gra - przycisk
+        self.add_widget(self.new_game_button())
 
     def create_small_square(self, row, col):
         small_square = BoxLayout(orientation='vertical', size_hint=(1, 1))
@@ -53,14 +57,26 @@ class SudokuBoard(GridLayout):
                 self.add_widget(self.create_small_square(i, j))
 
     def lives_display(self):
-        label1 = Label(text="pozostała ilość żyć: " + str(self.lives), font_name="Comic")
+        hearts = self.heart * self.lives
+        label1 = Label(text=hearts, font_name="Arial", font_size=40, color=(1, 0, 0, 1))
         return label1
+
+    def new_game_button(self):
+        layout = BoxLayout(orientation='vertical')
+        new_game_button = Button(text="Nowa Gra", font_name="Arial", font_size=30, color=(1, 0, 0, 1))
+        new_game_button.bind(on_press=self.new_game)
+        layout.add_widget(new_game_button)
+        return layout
 
     def remove_random_cells(self,count):
         for i in range(count):
             row = random.randint(0,8)
             col = random.randint(0,8)
             self.board[row][col].text = ""
+
+    def new_game(self, instance):
+        App.get_running_app().stop()
+        SudokuApp().run()
 
     def check_number(self, instance, value):
         # Pobierz indeksy wiersza i kolumny z atrybutu id
@@ -79,9 +95,14 @@ class SudokuBoard(GridLayout):
                 # Liczba jest nieprawidłowa - wyświetl komunikat błędu
                 self.board[row][col].background_color = (1, 0, 0, 0.7)
                 self.lives -= 1
-                self.box_lives.text = "pozostała ilość żyć: " + str(self.lives)
+                hearts = self.heart * self.lives
+                self.box_lives.text = hearts
                 if self.lives <= 0:
                     self.box_lives.text = "PORAŻKA :("
+                    # zablokowanie wpisywania po przegranej
+                    for i in range(9):
+                        for j in range(9):
+                            self.board[i][j].readonly = True
         else:
             # Liczba nie j
             instance.text = ''
