@@ -68,11 +68,15 @@ class SudokuBoard(GridLayout):
         layout.add_widget(new_game_button)
         return layout
 
-    def remove_random_cells(self,count):
-        for i in range(count):
-            row = random.randint(0,8)
-            col = random.randint(0,8)
-            self.board[row][col].text = ""
+    def remove_random_cells(self, count):
+        removed_cells = []
+        while len(removed_cells) < count:
+            row = random.randint(0, 8)
+            col = random.randint(0, 8)
+            cell = (row, col)
+            if cell not in removed_cells:
+                self.board[row][col].text = ""
+                removed_cells.append(cell)
 
     def new_game(self, instance):
         App.get_running_app().stop()

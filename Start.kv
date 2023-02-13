@@ -1,0 +1,55 @@
+<Start>:
+    canvas.before:
+        Color:
+            rgb: (0,0,0)
+        Rectangle:
+            size: self.width , self.height
+            pos: self.x, self.y
+
+    Label:
+        size_hint: 1, 0.4
+        pos_hint: {'x': 0, 'y': 0.6}
+        text: "Welcome to our Sudoku\n          Choose level"
+        canvas.before:
+            Color:
+                rgb: (0,0,0)
+            Rectangle:
+                size: self.width , self.height
+                pos: self.x, self.y
+
+    Button:
+        size_hint: 1, 0.2
+        pos_hint: {'x': 0, 'y': 0.4}
+        id : 'easy'
+        text: "EASY"
+        on_release: root.easy_button_click()
+        canvas.before:
+            Color:
+                rgb: (0,0,0)
+            Rectangle:
+                size: self.width , self.height
+                pos: self.x, self.y
+    Button:
+        size_hint: 1, 0.2
+        pos_hint: {'x': 0, 'y': 0.2}
+        id: 'medium'
+        text: "MEDIUM"
+        on_release: root.medium_button_click()
+        canvas.before:
+            Color:
+                rgb: (0,0,0)
+            Rectangle:
+                size: self.width , self.height
+                pos: self.x, self.y
+    Button:
+        size_hint: 1, 0.2
+        pos_hint: {'x': 0, 'y': 0}
+        id: 'hard'
+        text: "HARD"
+        on_release: root.hard_button_click()
+        canvas.before:
+            Color:
+                rgb: (0,0,0)
+            Rectangle:
+                size: self.width , self.height
+                pos: self.x, self.y
