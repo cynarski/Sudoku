@@ -7,8 +7,8 @@ import random
 
 class Start(FloatLayout):
 
+
     def easy_button_click(self):
-        print("EASY")
         counter = random.randint(10,20)
         print(counter)
         App.get_running_app().stop()
@@ -17,14 +17,18 @@ class Start(FloatLayout):
 
 
     def medium_button_click(self):
-        print("MEDIUM")
         counter = random.randint(21, 35)
         print(counter)
+        App.get_running_app().stop()
+        SudokuApp(counter).run()
+        StartApp().run()
 
     def hard_button_click(self):
-        print("HARD")
         counter = random.randint(35, 55)
         print(counter)
+        App.get_running_app().stop()
+        SudokuApp(counter).run()
+        StartApp().run()
 
 
 class StartApp(App):
