@@ -34,7 +34,6 @@ class SudokuBoard(GridLayout):
 
         # Stwórz 9 mniejszych kwadratów
         self.create_board()
-        self.remove_random_cells(20)
         # życia i czas gry
         self.box_lives = self.lives_display()
         self.add_widget(self.box_lives)
@@ -80,7 +79,6 @@ class SudokuBoard(GridLayout):
 
     def new_game(self, instance):
         App.get_running_app().stop()
-        SudokuApp().run()
 
     def check_number(self, instance, value):
         # Pobierz indeksy wiersza i kolumny z atrybutu id
@@ -113,11 +111,17 @@ class SudokuBoard(GridLayout):
 
 
 class SudokuApp(App):
+    def __init__(self, counter=0, **kwargs):
+        super().__init__(**kwargs)
+        self.counter = counter
+
     def build(self):
         # tutaj wstawiasz swoje puzzle Sudoku jako tablicę 9x9
         sudoku = Sudoku(random.choice(levels))
         puzzle = sudoku.solve()
-        return SudokuBoard(puzzle)
+        sudoku_to_play = SudokuBoard(puzzle)
+        sudoku_to_play.remove_random_cells(self.counter)
+        return sudoku_to_play
 
 
 if __name__ == '__main__':

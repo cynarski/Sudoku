@@ -11,8 +11,9 @@ class Start(FloatLayout):
         print("EASY")
         counter = random.randint(10,20)
         print(counter)
-        SudokuBoard.remove_random_cells(self,counter)
-        SudokuApp.run()
+        App.get_running_app().stop()
+        SudokuApp(counter).run()
+        StartApp().run()
 
 
     def medium_button_click(self):
