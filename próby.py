@@ -4,6 +4,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
+from kivy.clock import Clock
 from dokusan import generators,renderers,solvers
 import random
 from sudoku import Sudoku
@@ -105,6 +106,17 @@ class SudokuBoard(GridLayout):
                     for i in range(9):
                         for j in range(9):
                             self.board[i][j].readonly = True
+            else:
+                number_box_empty = False
+                for i in range(9):
+                    for j in range(9):
+                        if self.board[i][j].text == "":
+                            number_box_empty = True
+
+                if not number_box_empty:
+                    print("zwyciestwo")
+                    Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
+
         else:
             # Liczba nie j
             instance.text = ''
