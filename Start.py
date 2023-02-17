@@ -1,7 +1,7 @@
 from kivy import Config
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
-from próby import SudokuBoard,SudokuApp
+from proby import SudokuBoard,SudokuApp
 import random
 
 

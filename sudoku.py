@@ -26,11 +26,3 @@ class Sudoku:
         solution = np.array(list(str(solvers.backtrack(sudoku_array))))
         return solution.reshape(9,9)
 
-levels = ["EASY", "MEDIUM", "HARD"]
-
-# sudoku = Sudoku(random.choice(levels))
-# print(sudoku.difficoulty)
-#
-#
-# print(sudoku.sudoku)
-# print(sudoku.solve())
