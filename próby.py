@@ -8,6 +8,7 @@ from kivy.clock import Clock
 from dokusan import generators,renderers,solvers
 import random
 from sudoku import Sudoku
+from Win import WinApp
 
 levels = ["EASY", "MEDIUM", "HARD"]
 
@@ -114,11 +115,11 @@ class SudokuBoard(GridLayout):
                             number_box_empty = True
 
                 if not number_box_empty:
-                    print("zwyciestwo")
-                    Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
+                    App.get_running_app().stop() #wyłącza okno
+                    WinApp().run()
+                    #Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
 
         else:
-            # Liczba nie j
             instance.text = ''
 
 
