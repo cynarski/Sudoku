@@ -4,7 +4,12 @@ import próby
 
 
 class Win(FloatLayout):
-    pass
+
+    def new_game_button_click(self):
+        pass
+
+    def exit_button_click(self):
+        App.get_running_app().stop()
 
 
 class WinApp(App):
