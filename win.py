@@ -5,6 +5,7 @@ import start
 
 Builder.load_file('winkivy.kv', rulesonly=True)
 
+
 class Win(FloatLayout):
 
     def new_game_button_click(self):
@@ -21,5 +22,4 @@ class WinApp(App):
         return Win()
 
 
-if __name__ == '__main__':
-    WinApp().run()
+

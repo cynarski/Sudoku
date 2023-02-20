@@ -1,32 +1,42 @@
-from kivy.app import App
+from dokusan import generators, renderers, solvers
+from kivy.properties import NumericProperty
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+from kivy.core.window import Window
 from kivy.uix.button import Button
+from kivy.uix.label import Label
 from kivy.clock import Clock
-from dokusan import generators,renderers,solvers
-import random
+from kivy.app import App
 from sudoku import Sudoku
+from loss import LossApp
 from win import WinApp
+import random
 import start
 
 levels = ["EASY", "MEDIUM", "HARD"]
 
+Window.size = (800, 800)
+
 
 class SudokuBoard(GridLayout):
+    time_elapsed = NumericProperty(0)
+
     def __init__(self, puzzle, **kwargs):
         super().__init__(**kwargs)
         self.cols = 3
-        self.rows = 4
+        self.rows = 5
         self.spacing = 5
         self.padding = 5
         self.puzzle_to_function = puzzle
         self.lives = 3
         self.heart = '\u2665'
+        self.start_time = None
+        self.clock_event = Clock.schedule_interval(self.update_time, 0.1)
 
         # Stwórz 9x9 siatkę pól tekstowych
-        self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=30) for _ in range(9)] for _ in range(9)]
+        self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=30) for _ in range(9)]
+                      for _ in range(9)]
         for i in range(9):
             for j in range(9):
                 self.board[i][j].text = str(puzzle[i][j])
@@ -41,7 +51,10 @@ class SudokuBoard(GridLayout):
         self.box_lives = self.lives_display()
         self.add_widget(self.box_lives)
         # nowa gra - przycisk
+        self.label = Label(text="0:00")
+        self.add_widget(self.label)
         self.add_widget(self.new_game_button())
+        self.add_widget(self.exit_button())
 
     def create_small_square(self, row, col):
         small_square = BoxLayout(orientation='vertical', size_hint=(1, 1))
@@ -70,6 +83,23 @@ class SudokuBoard(GridLayout):
         layout.add_widget(new_game_button)
         return layout
 
+    def exit_button(self):
+        layout = BoxLayout(orientation='vertical')
+        exit_button = Button(text="Exit", font_size=30, color=(1, 0, 0, 1))
+        exit_button.bind(on_press=self.exit)
+        layout.add_widget(exit_button)
+        return layout
+
+    def update_time(self, dt):
+        if not self.start_time:
+            self.start_time = Clock.get_time()
+        self.time_elapsed = Clock.get_time() - self.start_time
+        minutes = int(self.time_elapsed / 60)
+        seconds = int(self.time_elapsed % 60)
+        self.label.text = " %d:%02d" % (minutes, seconds)
+
+
+
     def remove_random_cells(self, count):
         removed_cells = []
         while len(removed_cells) < count:
@@ -84,8 +114,10 @@ class SudokuBoard(GridLayout):
         App.get_running_app().stop()
         start.StartApp().run()
 
+    def exit(self, instance):
+        App.get_running_app().stop()
+
     def check_number(self, instance, value):
-        # Pobierz indeksy wiersza i kolumny z atrybutu id
         row, col = instance.id.split("-")
         row = int(row)
         col = int(col)
@@ -104,11 +136,8 @@ class SudokuBoard(GridLayout):
                 hearts = self.heart * self.lives
                 self.box_lives.text = hearts
                 if self.lives <= 0:
-                    self.box_lives.text = "PORAŻKA :("
-                    # zablokowanie wpisywania po przegranej
-                    for i in range(9):
-                        for j in range(9):
-                            self.board[i][j].readonly = True
+                    App.get_running_app().stop()  # wyłącza okno
+                    LossApp().run()
             else:
                 number_box_empty = False
                 for i in range(9):
@@ -117,9 +146,13 @@ class SudokuBoard(GridLayout):
                             number_box_empty = True
 
                 if not number_box_empty:
-                    App.get_running_app().stop() #wyłącza okno
+                    App.get_running_app().stop()  # wyłącza okno
                     WinApp().run()
-                    #Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
+                    self.clock_event.cancel()
+                    minutes = int(self.time_elapsed / 60)
+                    seconds = int(self.time_elapsed % 60)
+                    print("Czas trwania aplikacji: %d:%02d" % (minutes, seconds))
+                    # Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
 
         else:
             instance.text = ''
@@ -137,7 +170,3 @@ class SudokuApp(App):
         sudoku_to_play = SudokuBoard(puzzle)
         sudoku_to_play.remove_random_cells(self.counter)
         return sudoku_to_play
-
-
-if __name__ == '__main__':
-    SudokuApp().run()

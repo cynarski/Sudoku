@@ -1,9 +1,10 @@
-from kivy import Config
-from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
-import proby
-import random
 from kivy.lang import Builder
+from kivy.app import App
+from kivy import Config
+import random
+import proby
+
 
 Builder.load_file('startkivy.kv', rulesonly=True)
 
@@ -36,6 +37,4 @@ class StartApp(App):
         return Start()
 
 
-if __name__ == '__main__':
-    Config.read('configstart.ini')
-    StartApp().run()
+
