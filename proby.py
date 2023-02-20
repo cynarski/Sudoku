@@ -8,7 +8,7 @@ from kivy.clock import Clock
 from dokusan import generators,renderers,solvers
 import random
 from sudoku import Sudoku
-from Win import WinApp
+from win import WinApp
 
 levels = ["EASY", "MEDIUM", "HARD"]
 
@@ -59,12 +59,12 @@ class SudokuBoard(GridLayout):
 
     def lives_display(self):
         hearts = self.heart * self.lives
-        label1 = Label(text=hearts, font_name="Arial", font_size=40, color=(1, 0, 0, 1))
+        label1 = Label(text=hearts, font_size=40, color=(1, 0, 0, 1))
         return label1
 
     def new_game_button(self):
         layout = BoxLayout(orientation='vertical')
-        new_game_button = Button(text="Nowa Gra", font_name="Arial", font_size=30, color=(1, 0, 0, 1))
+        new_game_button = Button(text="Nowa Gra", font_size=30, color=(1, 0, 0, 1))
         new_game_button.bind(on_press=self.new_game)
         layout.add_widget(new_game_button)
         return layout
