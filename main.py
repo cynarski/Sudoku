@@ -1,4 +1,4 @@
-from Start import StartApp
+from start import StartApp
 
 
 if __name__ == '__main__':
