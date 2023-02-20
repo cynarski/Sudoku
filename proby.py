@@ -9,6 +9,7 @@ from dokusan import generators,renderers,solvers
 import random
 from sudoku import Sudoku
 from win import WinApp
+import start
 
 levels = ["EASY", "MEDIUM", "HARD"]
 
@@ -81,6 +82,7 @@ class SudokuBoard(GridLayout):
 
     def new_game(self, instance):
         App.get_running_app().stop()
+        start.StartApp().run()
 
     def check_number(self, instance, value):
         # Pobierz indeksy wiersza i kolumny z atrybutu id

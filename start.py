@@ -1,34 +1,33 @@
 from kivy import Config
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
-from proby import SudokuBoard,SudokuApp
+import proby
 import random
+from kivy.lang import Builder
 
+Builder.load_file('startkivy.kv', rulesonly=True)
 
 class Start(FloatLayout):
 
 
     def easy_button_click(self):
-        counter = random.randint(10,20)
+        counter = random.randint(1,2)
         print(counter)
         App.get_running_app().stop()
-        SudokuApp(counter).run()
-        StartApp().run()
+        proby.SudokuApp(counter).run()
 
 
     def medium_button_click(self):
         counter = random.randint(21, 35)
         print(counter)
         App.get_running_app().stop()
-        SudokuApp(counter).run()
-        StartApp().run()
+        proby.SudokuApp(counter).run()
 
     def hard_button_click(self):
         counter = random.randint(35, 55)
         print(counter)
         App.get_running_app().stop()
-        SudokuApp(counter).run()
-        StartApp().run()
+        proby.SudokuApp(counter).run()
 
 
 class StartApp(App):
