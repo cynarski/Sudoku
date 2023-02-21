@@ -56,6 +56,7 @@ class SudokuBoard(GridLayout):
         self.add_widget(self.label)
         # new game - button
         self.add_widget(self.new_game_button())
+        self.add_widget(Label(text="     Created by:\n Michał Cynarski\n Mateusz Cierpik",font_size=25))
         self.add_widget(self.exit_button())
 
     def create_small_square(self, row, col):
