@@ -10,6 +10,7 @@ class Win(FloatLayout):
     def __init__(self, game_time, **kwargs):
         super().__init__(**kwargs)
         self.minutes, self.seconds = game_time
+        self.time_label.text = "%d:%02d" % (self.minutes, self.seconds)
 
     def new_game_button_click(self):
         App.get_running_app().stop()

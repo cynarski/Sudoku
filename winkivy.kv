@@ -1,6 +1,7 @@
 #include proby.py
 
 <Win>:
+    time_label: time_label
     canvas.before:
         Color:
             rgb: (0,0,0)
@@ -23,7 +24,8 @@
     Label:
         size_hint: 1, 0.2
         pos_hint: {'x': 0, 'y': 0.4}
-        text: root.time_to_text(self)
+        id: time_label
+        text: "wypierdzielaj glupi label uposledzony"
         font_size: 30
         canvas.before:
             Color:
