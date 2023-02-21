@@ -8,27 +8,26 @@ import proby
 
 Builder.load_file('startkivy.kv', rulesonly=True)
 
+
 class Start(FloatLayout):
 
-
     def easy_button_click(self):
-        counter = random.randint(1,2)
-        print(counter)
+        counter = random.randint(10, 20)
         App.get_running_app().stop()
-        proby.SudokuApp(counter).run()
-
+        level = "EASY"
+        proby.SudokuApp(counter, level).run()
 
     def medium_button_click(self):
         counter = random.randint(21, 35)
-        print(counter)
         App.get_running_app().stop()
-        proby.SudokuApp(counter).run()
+        level = "MEDIUM"
+        proby.SudokuApp(counter, level).run()
 
     def hard_button_click(self):
         counter = random.randint(35, 55)
-        print(counter)
         App.get_running_app().stop()
-        proby.SudokuApp(counter).run()
+        level = "HARD"
+        proby.SudokuApp(counter, level).run()
 
 
 class StartApp(App):
