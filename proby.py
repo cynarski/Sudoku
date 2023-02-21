@@ -22,8 +22,7 @@ Window.size = (800, 800)
 class SudokuBoard(GridLayout):
     time_elapsed = NumericProperty(0)
 
-
-    def __init__(self, puzzle, **kwargs):
+    def __init__(self, puzzle,level, **kwargs):
         super().__init__(**kwargs)
         self.cols = 3
         self.rows = 5
@@ -34,9 +33,9 @@ class SudokuBoard(GridLayout):
         self.start_time = None
         self.clock_event = Clock.schedule_interval(self.update_time, 0.1)
         self.finsh_time = 0
+        self.level = level
 
 
-        # Stwórz 9x9 siatkę pól tekstowych
         self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=30) for _ in range(9)]
                       for _ in range(9)]
         for i in range(9):
@@ -47,13 +46,15 @@ class SudokuBoard(GridLayout):
                 self.board[i][j].bind(text=self.check_number)
                 self.board[i][j].id = f"{i}-{j}"
 
-        # Stwórz 9 mniejszych kwadratów
+        # Create 9 smaller squares
         self.create_board()
-        # życia i czas gry
+        # lives and time of the game
         self.box_lives = self.lives_display()
         self.add_widget(self.box_lives)
-        self.label = Label(text="0:00")
-        # nowa gra - przycisk
+        self.level_choose = self.add_level(self.level)
+        self.add_widget(self.level_choose)
+        self.label = Label(text="0:00", font_size=30)
+        # new game - button
         self.add_widget(self.label)
         self.add_widget(self.new_game_button())
         self.add_widget(self.exit_button())
@@ -91,6 +92,10 @@ class SudokuBoard(GridLayout):
         layout.add_widget(exit_button)
         return layout
 
+    def add_level(self,instance):
+        label = Label(text=self.level, font_size=30)
+        return label
+
     def update_time(self, dt):
         if not self.start_time:
             self.start_time = Clock.get_time()
@@ -103,9 +108,7 @@ class SudokuBoard(GridLayout):
         self.clock_event.cancel()
         minutes = int(self.time_elapsed / 60)
         seconds = int(self.time_elapsed % 60)
-        self.finsh_time = (minutes,seconds)
-
-
+        self.finsh_time = (minutes, seconds)
 
     def remove_random_cells(self, count):
         removed_cells = []
@@ -142,7 +145,7 @@ class SudokuBoard(GridLayout):
                 self.lives -= 1
                 self.box_lives.text = str(self.lives) + "/3"
                 if self.lives <= 0:
-                    App.get_running_app().stop()  # wyłącza okno
+                    App.get_running_app().stop()  # close window
                     LossApp().run()
             else:
                 number_box_empty = False
@@ -152,30 +155,30 @@ class SudokuBoard(GridLayout):
                             number_box_empty = True
 
                 if not number_box_empty:
-                    App.get_running_app().stop()  # wyłącza okno
+                    App.get_running_app().stop()
                     minutes = int(self.time_elapsed / 60)
                     seconds = int(self.time_elapsed % 60)
                     game_time = minutes, seconds
                     WinApp(game_time).run()
-                    #self.clock_event.cancel()
-                    #minutes = int(self.time_elapsed / 60)
-                    #seconds = int(self.time_elapsed % 60)
-                    #print("Twój czas wynosi: %d:%02d" % (minutes, seconds))
+
 
                     # Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
 
         else:
             instance.text = ''
 
+
 class SudokuApp(App):
-    def __init__(self, counter=0, **kwargs):
+    def __init__(self, counter=0, level="", **kwargs):
         super().__init__(**kwargs)
         self.counter = counter
+        self.level = level
 
     def build(self):
         # tutaj wstawiasz swoje puzzle Sudoku jako tablicę 9x9
         sudoku = Sudoku(random.choice(levels))
         puzzle = sudoku.solve()
-        sudoku_to_play = SudokuBoard(puzzle)
+        sudoku_to_play = SudokuBoard(puzzle,self.level)
         sudoku_to_play.remove_random_cells(self.counter)
+        sudoku_to_play.add_level(self.level)
         return sudoku_to_play
