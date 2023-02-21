@@ -22,10 +22,21 @@
                 pos: self.x, self.y
 
     Label:
-        size_hint: 1, 0.2
+        size_hint: 1, 0.1
+        pos_hint: {'x': 0, 'y': 0.5}
+        text: "Your time is: "
+        font_size: 30
+        canvas.before:
+            Color:
+                rgb: (0,0,0)
+            Rectangle:
+                size: self.width , self.height
+                pos: self.x, self.y
+
+    Label:
+        size_hint: 1, 0.1
         pos_hint: {'x': 0, 'y': 0.4}
         id: time_label
-        text: "wypierdzielaj glupi label uposledzony"
         font_size: 30
         canvas.before:
             Color:
