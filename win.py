@@ -17,7 +17,12 @@ class Win(FloatLayout):
         start.StartApp().run()
 
     def exit_button_click(self):
+        print("Twój czas wynosi: %d:%02d" % (self.minutes, self.seconds))
         App.get_running_app().stop()
+
+    def time_to_text(self,iterations):
+        return "%d:%02d" % (self.minutes, self.seconds)
+
 
 
 class WinApp(App):
@@ -27,6 +32,5 @@ class WinApp(App):
 
     def build(self):
         return Win(self.game_time)
-
 
 

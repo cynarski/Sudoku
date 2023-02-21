@@ -9,9 +9,21 @@
             pos: self.x, self.y
 
     Label:
-        size_hint: 1, 0.6
-        pos_hint: {'x': 0, 'y': 0.4}
+        size_hint: 1, 0.4
+        pos_hint: {'x': 0, 'y': 0.6}
         text: " Congratulations You Won\nDo you want to play again?"
+        font_size: 30
+        canvas.before:
+            Color:
+                rgb: (0,0,0)
+            Rectangle:
+                size: self.width , self.height
+                pos: self.x, self.y
+
+    Label:
+        size_hint: 1, 0.2
+        pos_hint: {'x': 0, 'y': 0.4}
+        text: root.time_to_text(self)
         font_size: 30
         canvas.before:
             Color:
@@ -23,6 +35,7 @@
     Label:
         size_hint: 1, 0.1
         pos_hint: {'x': 0, 'y': 0.3}
+        id: time
         text: "If you want to play again click New Game else click Exit"
         font_size: 30
         canvas.before:
