@@ -1,4 +1,6 @@
-<Loss>:
+#include proby.py
+
+<Win>:
     canvas.before:
         Color:
             rgb: (0,0,0)
@@ -9,7 +11,7 @@
     Label:
         size_hint: 1, 0.6
         pos_hint: {'x': 0, 'y': 0.4}
-        text: "    Unfortunately you loss\nDo you want to play again?"
+        text: " Congratulations You Won\nDo you want to play again?"
         font_size: 30
         canvas.before:
             Color:
@@ -66,4 +68,3 @@
                 Rectangle:
                     size: self.width , self.height
                     pos: self.x, self.y
-

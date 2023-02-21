@@ -22,6 +22,7 @@ Window.size = (800, 800)
 class SudokuBoard(GridLayout):
     time_elapsed = NumericProperty(0)
 
+
     def __init__(self, puzzle, **kwargs):
         super().__init__(**kwargs)
         self.cols = 3
@@ -33,6 +34,8 @@ class SudokuBoard(GridLayout):
         self.heart = '\u2665'
         self.start_time = None
         self.clock_event = Clock.schedule_interval(self.update_time, 0.1)
+        self.finsh_time = 0
+
 
         # Stwórz 9x9 siatkę pól tekstowych
         self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=30) for _ in range(9)]
@@ -50,8 +53,8 @@ class SudokuBoard(GridLayout):
         # życia i czas gry
         self.box_lives = self.lives_display()
         self.add_widget(self.box_lives)
-        # nowa gra - przycisk
         self.label = Label(text="0:00")
+        # nowa gra - przycisk
         self.add_widget(self.label)
         self.add_widget(self.new_game_button())
         self.add_widget(self.exit_button())
@@ -97,6 +100,12 @@ class SudokuBoard(GridLayout):
         minutes = int(self.time_elapsed / 60)
         seconds = int(self.time_elapsed % 60)
         self.label.text = " %d:%02d" % (minutes, seconds)
+
+    def end_time(self):
+        self.clock_event.cancel()
+        minutes = int(self.time_elapsed / 60)
+        seconds = int(self.time_elapsed % 60)
+        self.finsh_time = (minutes,seconds)
 
 
 
@@ -151,12 +160,12 @@ class SudokuBoard(GridLayout):
                     self.clock_event.cancel()
                     minutes = int(self.time_elapsed / 60)
                     seconds = int(self.time_elapsed % 60)
-                    print("Czas trwania aplikacji: %d:%02d" % (minutes, seconds))
+                    print("Twój czas wynosi: %d:%02d" % (minutes, seconds))
+
                     # Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
 
         else:
             instance.text = ''
-
 
 class SudokuApp(App):
     def __init__(self, counter=0, **kwargs):
