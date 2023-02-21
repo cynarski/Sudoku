@@ -31,7 +31,6 @@ class SudokuBoard(GridLayout):
         self.padding = 5
         self.puzzle_to_function = puzzle
         self.lives = 3
-        self.heart = '\u2665'
         self.start_time = None
         self.clock_event = Clock.schedule_interval(self.update_time, 0.1)
         self.finsh_time = 0
@@ -75,8 +74,7 @@ class SudokuBoard(GridLayout):
                 self.add_widget(self.create_small_square(i, j))
 
     def lives_display(self):
-        hearts = self.heart * self.lives
-        label1 = Label(text=hearts, font_size=40, color=(1, 0, 0, 1))
+        label1 = Label(text="3/3", font_size=40, color=(1, 0, 0, 1))
         return label1
 
     def new_game_button(self):
@@ -142,8 +140,7 @@ class SudokuBoard(GridLayout):
                 # Liczba jest nieprawidłowa - wyświetl komunikat błędu
                 self.board[row][col].background_color = (1, 0, 0, 0.7)
                 self.lives -= 1
-                hearts = self.heart * self.lives
-                self.box_lives.text = hearts
+                self.box_lives.text = str(self.lives) + "/3"
                 if self.lives <= 0:
                     App.get_running_app().stop()  # wyłącza okno
                     LossApp().run()
