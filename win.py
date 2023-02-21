@@ -7,10 +7,13 @@ Builder.load_file('winkivy.kv', rulesonly=True)
 
 
 class Win(FloatLayout):
-
+    def __init__(self, game_time, **kwargs):
+        super().__init__(**kwargs)
+        self.minutes, self.seconds = game_time
 
     def new_game_button_click(self):
         App.get_running_app().stop()
+        print("Twój czas wynosi: %d:%02d" % (self.minutes, self.seconds))
         start.StartApp().run()
 
     def exit_button_click(self):
@@ -18,9 +21,12 @@ class Win(FloatLayout):
 
 
 class WinApp(App):
+    def __init__(self, game_time, **kwargs):
+        super().__init__(**kwargs)
+        self.game_time = game_time
 
     def build(self):
-        return Win()
+        return Win(self.game_time)
 
 
 

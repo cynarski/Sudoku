@@ -156,11 +156,14 @@ class SudokuBoard(GridLayout):
 
                 if not number_box_empty:
                     App.get_running_app().stop()  # wyłącza okno
-                    WinApp().run()
-                    self.clock_event.cancel()
                     minutes = int(self.time_elapsed / 60)
                     seconds = int(self.time_elapsed % 60)
-                    print("Twój czas wynosi: %d:%02d" % (minutes, seconds))
+                    game_time = minutes, seconds
+                    WinApp(game_time).run()
+                    #self.clock_event.cancel()
+                    #minutes = int(self.time_elapsed / 60)
+                    #seconds = int(self.time_elapsed % 60)
+                    #print("Twój czas wynosi: %d:%02d" % (minutes, seconds))
 
                     # Clock.schedule_once(lambda x: App.get_running_app().stop(), 5)
 
