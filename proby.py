@@ -16,8 +16,6 @@ import start
 
 levels = ["EASY", "MEDIUM", "HARD"]
 
-# klawiatura - wyświetlanie pierwsza próba (nie działa to)
-Window.softinput_mode = "below_target"
 
 class SudokuBoard(GridLayout):
     time_elapsed = NumericProperty(0)
@@ -44,6 +42,7 @@ class SudokuBoard(GridLayout):
                 self.board[i][j].foreground_color = (0, 0, 0, 1)
                 self.board[i][j].bind(text=self.check_number)
                 self.board[i][j].id = f"{i}-{j}"
+                self.board[i][j].bind(on_touch_down=self.activate_text_input)
 
         # Create 9 smaller squares
         self.create_board()
@@ -58,17 +57,6 @@ class SudokuBoard(GridLayout):
         self.add_widget(self.new_game_button())
         self.add_widget(Label(text="     Created by:\n Michał Cynarski\n Mateusz Cierpik",font_size=25))
         self.add_widget(self.exit_button())
-        # próby ustawienia focusa na textInput i Buttons :
-
-        # all buttons (to focus)
-        self.buttons = [self.new_game_button(), self.exit_button()]
-        # focus
-        Clock.schedule_once(self.focus_widgets, 0.1)
-
-        # focus - 2 próba/metoda
-        for child in self.children:
-            if isinstance(child, TextInput):
-                child.focus = True
 
     def create_small_square(self, row, col):
         small_square = BoxLayout(orientation='vertical', size_hint=(1, 1))
@@ -121,12 +109,10 @@ class SudokuBoard(GridLayout):
         seconds = int(self.time_elapsed % 60)
         self.finsh_time = (minutes,seconds)
 
-    def focus_widgets(self, dt):
-        for i in range(9):
-            for j in range(9):
-                self.board[i][j].focus = True
-        for button in self.buttons:
-            button.focus = True
+    def activate_text_input(self, instance, touch):
+        # called when the text input field is touched
+        if instance.collide_point(*touch.pos):
+            instance.focus = True
 
     def remove_random_cells(self, count):
         removed_cells = []
