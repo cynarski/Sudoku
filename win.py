@@ -1,31 +1,26 @@
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 import start
 
 Builder.load_file('winkivy.kv', rulesonly=True)
 
 
-class Win(FloatLayout):
-    def __init__(self, game_time, **kwargs):
-        super().__init__(**kwargs)
-        self.minutes, self.seconds = game_time
-        self.time_label.text = "%d:%02d" % (self.minutes, self.seconds)
+class Win(Screen):
+    def update_timer(self, game_time):
+        minutes, seconds = game_time
+        self.time_label.text = "%d:%02d" % (minutes, seconds)
 
     def new_game_button_click(self):
-        App.get_running_app().stop()
-        start.StartApp().run()
+        self.manager.current = 'screen_one'
 
     def exit_button_click(self):
         App.get_running_app().stop()
 
 
 class WinApp(App):
-    def __init__(self, game_time, **kwargs):
-        super().__init__(**kwargs)
-        self.game_time = game_time
-
     def build(self):
-        return Win(self.game_time)
+        return Win()
 
 

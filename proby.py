@@ -1,4 +1,5 @@
 from dokusan import generators, renderers, solvers
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import NumericProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -9,18 +10,19 @@ from kivy.uix.label import Label
 from kivy.clock import Clock
 from kivy.app import App
 from sudoku import Sudoku
-from loss import LossApp
+import loss
 from win import WinApp
 import random
 import start
 
 levels = ["EASY", "MEDIUM", "HARD"]
+Window.size = (800, 800)
 
 
-class SudokuBoard(GridLayout):
+class SudokuBoard(GridLayout, Screen):
     time_elapsed = NumericProperty(0)
 
-    def __init__(self, puzzle, level, **kwargs):
+    def __init__(self, puzzle, **kwargs):
         super().__init__(**kwargs)
         self.cols = 3
         self.rows = 5
@@ -31,7 +33,8 @@ class SudokuBoard(GridLayout):
         self.start_time = None
         self.clock_event = Clock.schedule_interval(self.update_time, 0.1)
         self.finsh_time = 0
-        self.level = level
+        self.level = "xd"
+        self.next_game = False
 
         self.board = [[TextInput(input_filter='int', multiline=False, halign='center', font_size=30) for _ in range(9)]
                       for _ in range(9)]
@@ -49,8 +52,10 @@ class SudokuBoard(GridLayout):
         # lives and time of the game
         self.box_lives = self.lives_display()
         self.add_widget(self.box_lives)
-        self.level_choose = self.add_level(self.level)
-        self.add_widget(self.level_choose)
+
+        self.level_label = Label(text=self.level, font_size=30)
+        self.add_widget(self.level_label)
+
         self.label = Label(text="0:00", font_size=30)
         self.add_widget(self.label)
         # new game - button
@@ -95,6 +100,10 @@ class SudokuBoard(GridLayout):
         label = Label(text=self.level, font_size=30)
         return label
 
+    def update_level_label(self, level):
+        self.level = level
+        self.level_label.text = self.level
+
     def update_time(self, dt):
         if not self.start_time:
             self.start_time = Clock.get_time()
@@ -125,11 +134,30 @@ class SudokuBoard(GridLayout):
                 removed_cells.append(cell)
 
     def new_game(self, instance):
-        App.get_running_app().stop()
-        start.StartApp().run()
+        self.manager.current = 'screen_one'
 
     def exit(self, instance):
         App.get_running_app().stop()
+
+    def on_pre_enter(self):
+        #if not self.manager.get_screen('screen_two').children:
+        if self.next_game:
+            self.create_board_object(self.manager)
+
+    @classmethod
+    def create_board_object(cls, screen_manager):
+        sudoku = Sudoku(random.choice(levels))
+        puzzle = sudoku.solve()
+        screen_manager.remove_widget(screen_manager.current_screen)
+        screen_two = cls(name='screen_two', puzzle=puzzle)
+        screen_manager.add_widget(screen_two)
+        screen_manager.current = 'screen_two'
+        return screen_two
+
+    def on_leave(self):
+        #self.manager.remove_widget(self)
+        #self.clear_widgets()
+        self.next_game = True
 
     def check_number(self, instance, value):
         row, col = instance.id.split("-")
@@ -144,8 +172,7 @@ class SudokuBoard(GridLayout):
                 self.lives -= 1
                 self.box_lives.text = str(self.lives) + "/3"
                 if self.lives <= 0:
-                    App.get_running_app().stop()
-                    LossApp().run()
+                    self.manager.current = 'screen_three'
             else:
                 number_box_empty = False
                 for i in range(9):
@@ -154,11 +181,12 @@ class SudokuBoard(GridLayout):
                             number_box_empty = True
 
                 if not number_box_empty:
-                    App.get_running_app().stop()
                     minutes = int(self.time_elapsed / 60)
                     seconds = int(self.time_elapsed % 60)
                     game_time = minutes, seconds
-                    WinApp(game_time).run()
+                    self.manager.current = 'screen_four'
+                    screen_four = self.manager.get_screen('screen_four')
+                    screen_four.update_timer(game_time)
 
         else:
             instance.text = ''
@@ -173,7 +201,7 @@ class SudokuApp(App):
     def build(self):
         sudoku = Sudoku(random.choice(levels))
         puzzle = sudoku.solve()
-        sudoku_to_play = SudokuBoard(puzzle, self.level)
+        sudoku_to_play = SudokuBoard(puzzle)
         sudoku_to_play.remove_random_cells(self.counter)
         sudoku_to_play.add_level(self.level)
         return sudoku_to_play
