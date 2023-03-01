@@ -142,17 +142,17 @@ class SudokuBoard(GridLayout, Screen):
     def on_pre_enter(self):
         #if not self.manager.get_screen('screen_two').children:
         if self.next_game:
-            self.create_board_object(self.manager)
+            self.create_board_object()
 
-    @classmethod
-    def create_board_object(cls, screen_manager):
+    def create_board_object(self):
         sudoku = Sudoku(random.choice(levels))
         puzzle = sudoku.solve()
-        screen_manager.remove_widget(screen_manager.current_screen)
-        screen_two = cls(name='screen_two', puzzle=puzzle)
+
+        screen_manager = self.manager
+        screen_manager.remove_widget(self)
+        screen_two = SudokuBoard(name='screen_two', puzzle=puzzle)
         screen_manager.add_widget(screen_two)
         screen_manager.current = 'screen_two'
-        return screen_two
 
     def on_leave(self):
         #self.manager.remove_widget(self)
