@@ -14,7 +14,6 @@ from kivy.uix.textinput import TextInput
 from sudoku import Sudoku
 
 levels = ["EASY", "MEDIUM", "HARD"]
-Window.size = (800, 800)
 
 
 class SudokuBoard(GridLayout, Screen):
