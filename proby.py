@@ -1,19 +1,17 @@
-from dokusan import generators, renderers, solvers
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.properties import NumericProperty
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.textinput import TextInput
-from kivy.core.window import Window
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.clock import Clock
-from kivy.app import App
-from sudoku import Sudoku
-import loss
-from win import WinApp
 import random
-import start
+
+from kivy.app import App
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.properties import NumericProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.label import Label
+from kivy.uix.screenmanager import Screen
+from kivy.uix.textinput import TextInput
+
+from sudoku import Sudoku
 
 levels = ["EASY", "MEDIUM", "HARD"]
 Window.size = (800, 800)
