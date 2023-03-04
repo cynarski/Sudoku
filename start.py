@@ -1,16 +1,12 @@
-from kivy.uix.floatlayout import FloatLayout
-from kivy.lang import Builder
-from kivy.app import App
-from kivy import Config
-from kivy.uix.screenmanager import ScreenManager, Screen
 import random
-import proby
+
+from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
+
 import loss
+import proby
 import win
 from sudoku import Sudoku
-
-
-Builder.load_file('startkivy.kv', rulesonly=True)
 
 
 class Start(Screen):
