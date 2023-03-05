@@ -14,6 +14,7 @@ class Start(Screen):
     def easy_button_click(self):
         counter = random.randint(10, 20)
         level = "EASY"
+        self.manager.transition.direction = 'left'
         self.manager.current = 'screen_two'
         screen_two = self.manager.get_screen('screen_two')
         screen_two.remove_random_cells(counter)
@@ -22,6 +23,7 @@ class Start(Screen):
     def medium_button_click(self):
         counter = random.randint(21, 35)
         level = "MEDIUM"
+        self.manager.transition.direction = 'left'
         self.manager.current = 'screen_two'
         screen_two = self.manager.get_screen('screen_two')
         screen_two.remove_random_cells(counter)
@@ -30,6 +32,7 @@ class Start(Screen):
     def hard_button_click(self):
         counter = random.randint(35, 55)
         level = "HARD"
+        self.manager.transition.direction = 'left'
         self.manager.current = 'screen_two'
         screen_two = self.manager.get_screen('screen_two')
         screen_two.remove_random_cells(counter)

@@ -38,7 +38,7 @@ class SudokuBoard(GridLayout, Screen):
         for i in range(9):
             for j in range(9):
                 self.board[i][j].text = str(puzzle[i][j])
-                self.board[i][j].readonly = False
+                self.board[i][j].readonly = True
                 self.board[i][j].foreground_color = (0, 0, 0, 1)
                 self.board[i][j].bind(text=self.check_number)
                 self.board[i][j].id = f"{i}-{j}"
@@ -81,7 +81,7 @@ class SudokuBoard(GridLayout, Screen):
 
     def new_game_button(self):
         layout = BoxLayout(orientation='vertical')
-        new_game_button = Button(text="Nowa Gra", font_size=30, color=(1, 0, 0, 1))
+        new_game_button = Button(text="New Game", font_size=30, color=(1, 0, 0, 1))
         new_game_button.bind(on_press=self.new_game)
         layout.add_widget(new_game_button)
         return layout
@@ -128,9 +128,11 @@ class SudokuBoard(GridLayout, Screen):
             cell = (row, col)
             if cell not in removed_cells:
                 self.board[row][col].text = ""
+                self.board[row][col].readonly = False
                 removed_cells.append(cell)
 
     def new_game(self, instance):
+        self.manager.transition.direction = 'right'
         self.manager.current = 'screen_one'
 
     def exit(self, instance):
@@ -169,8 +171,10 @@ class SudokuBoard(GridLayout, Screen):
                 self.lives -= 1
                 self.box_lives.text = str(self.lives) + "/3"
                 if self.lives <= 0:
+                    self.manager.transition.direction = 'left'
                     self.manager.current = 'screen_three'
             else:
+                self.board[row][col].readonly = True
                 number_box_empty = False
                 for i in range(9):
                     for j in range(9):
@@ -181,6 +185,7 @@ class SudokuBoard(GridLayout, Screen):
                     minutes = int(self.time_elapsed / 60)
                     seconds = int(self.time_elapsed % 60)
                     game_time = minutes, seconds
+                    self.manager.transition.direction = 'left'
                     self.manager.current = 'screen_four'
                     screen_four = self.manager.get_screen('screen_four')
                     screen_four.update_timer(game_time)

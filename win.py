@@ -1,5 +1,8 @@
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
+from kivy.lang import Builder
+
+Builder.load_file('win.kv', rulesonly=True)
 
 
 class Win(Screen):
@@ -8,6 +11,7 @@ class Win(Screen):
         self.time_label.text = "%d:%02d" % (minutes, seconds)
 
     def new_game_button_click(self):
+        self.manager.transition.direction = 'right'
         self.manager.current = 'screen_one'
 
     def exit_button_click(self):
