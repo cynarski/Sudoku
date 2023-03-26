@@ -7,7 +7,7 @@ TODO:
 * Win and Loss panel
 * Android version
 
-##Libraries which we used:
+## Libraries which we used:
 * kivy - 2.1.0
 * numpy - 1.24.2
 * dokusan - 0.1.0a6
@@ -30,7 +30,10 @@ In command prompt we should write
 
 `pip install buildozer`
 
+next
+
 `buildozer init`
+
 This line create file buildozer.spec. In this file we can change name, choose orientation and other basic specifications wchih we want to have in our application.
 
 Next we are ready to create app. We should write this line in cmd:
