@@ -8,7 +8,7 @@ This is our first project of python
 
 ## How to install libraries
 Open command prompt in virtual enviroment and write
-`python -m pip install --upgrade pip`
-
+`python -m pip install --upgrade pip`\n
 next 
+
 `pip install kivy`
