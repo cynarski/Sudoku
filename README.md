@@ -1,6 +1,11 @@
 # Sudoku project in Python for Windows and Android
+This is our first project of python
 
-Liberies which we used:
-* kivy
-* numpy
-* dokusan
+##Libraries which we used:
+* kivy - 2.1.0
+* numpy - 1.24.2
+* dokusan - 0.1.0a6
+
+## How to install libraries
+
+`pip install kivy`
