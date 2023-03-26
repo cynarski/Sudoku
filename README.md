@@ -7,5 +7,7 @@ This is our first project of python
 * dokusan - 0.1.0a6
 
 ## How to install libraries
-
+Open command prompt in virtual enviroment and write
+`python -m pip install --upgrade pip`
+next 
 `pip install kivy`
