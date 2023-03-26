@@ -1,1 +1,6 @@
-# Sudoku project in Python for Windows and Android using kivy, buildozer and dokusan
+# Sudoku project in Python for Windows and Android
+
+Liberies which we used:
+* kivy
+* numpy
+* dokusan
